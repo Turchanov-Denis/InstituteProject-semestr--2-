@@ -1,39 +1,94 @@
-class ExpressionEvaluator:
+# class ArithmeticExpressionSolver:
+#     def __init__(self):
+#         pass
+
+#     @staticmethod
+#     def evaluate_expression(expression):
+#         try:
+#             result = eval(expression[:-1])
+#             return result
+#         except ZeroDivisionError:
+#             return "Error: division by zero"
+#         except Exception as e:
+#             return f"Error: {str(e)}"
+
+# def main():
+#     expression_solver = ArithmeticExpressionSolver()
+
+#     expression = input("Enter a mathematical expression (ending with '='): ")
+
+#     result = expression_solver.evaluate_expression(expression)
+#     print(f"Result of the expression: {result}")
+
+# if __name__ == "__main__":
+#     main()
+
+class ArithmeticExpressionSolver:
     def __init__(self):
-        self.stack = []
+        pass
 
-    def is_operator(self, char):
-        return char in {'+', '-', '*', '/'}
+    @staticmethod
+    def evaluate_expression(expression):
+        try:
+            result = ArithmeticExpressionSolver.calculate(expression[:-1])
+            return result
+        except ZeroDivisionError:
+            return "Error: division by zero"
+        except Exception as e:
+            return f"Error: {str(e)}"
 
-    def perform_operation(self, operator):
-        operand2, operand1 = self.stack.pop(), self.stack.pop()
-        if operator == '+': self.stack.append(operand1 + operand2)
-        elif operator == '-': self.stack.append(operand1 - operand2)
-        elif operator == '*': self.stack.append(operand1 * operand2)
-        elif operator == '/': self.stack.append(operand1 / operand2)
+    @staticmethod
+    def calculate(expression):
+        operators = {'+': (1, lambda x, y: x + y), '-': (1, lambda x, y: x - y),
+                     '*': (2, lambda x, y: x * y), '/': (2, lambda x, y: x / y)}
 
-    def evaluate_expression(self, expression):
-        for char in expression:
-            if char.isdigit(): self.stack.append(int(char))
-            elif char == '(': self.stack.append(char)
-            elif char == ')':
-                while self.stack[-1] != '(': self.perform_operation(self.stack.pop())
-                self.stack.pop()
-            elif self.is_operator(char):
-                while self.stack and self.stack[-1] in {'+', '-', '*', '/'} and char in {'+', '-'}:
-                    self.perform_operation(self.stack.pop())
-                self.stack.append(char)
-            elif char == '=':
-                while self.stack and self.stack[-1] in {'+', '-', '*', '/'}:
-                    self.perform_operation(self.stack.pop())
-        return self.stack[0]
+        def shunting_yard_algorithm(tokens):
+            output = []
+            stack = []
+            for token in tokens:
+                if token.isdigit():
+                    output.append(token)
+                elif token in operators:
+                    while (stack and stack[-1] in operators and
+                           operators[token][0] <= operators[stack[-1]][0]):
+                        output.append(stack.pop())
+                    stack.append(token)
+                elif token == '(':
+                    stack.append(token)
+                elif token == ')':
+                    while stack and stack[-1] != '(':
+                        output.append(stack.pop())
+                    if stack and stack[-1] == '(':
+                        stack.pop()
+            while stack:
+                output.append(stack.pop())
+            return output
 
-    def run(self):
-        expression = input("Enter a mathematical expression ending with '=': ")
-        result = self.evaluate_expression(expression)
-        print(f"Result: {result}")
+        def calculate_rpn(rpn):
+            stack = []
+            for token in rpn:
+                if token.isdigit():
+                    stack.append(float(token))
+                elif token in operators:
+                    y, x = stack.pop(), stack.pop()
+                    stack.append(operators[token][1](x, y))
+            return stack[0]
 
+        tokens = expression.replace('+', ' + ').replace('-', ' - ').replace('*', ' * ').replace('/', ' / ').replace('(', ' ( ').replace(')', ' ) ').split()
+        print(tokens)
+        rpn = shunting_yard_algorithm(tokens)
+        result = calculate_rpn(rpn)
+        return result
+
+
+def main():
+    expression_solver = ArithmeticExpressionSolver()
+
+    expression = input("Enter a mathematical expression (ending with '='): ")
+
+    result = expression_solver.evaluate_expression(expression)
+    print(f"Result of the expression: {result}")
 
 if __name__ == "__main__":
-    expression_evaluator = ExpressionEvaluator()
-    expression_evaluator.run()
+    main()
+
