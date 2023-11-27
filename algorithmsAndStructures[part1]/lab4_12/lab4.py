@@ -40,16 +40,16 @@ class SortingMethods:
     @staticmethod
     def shell_sort(arr):
         n = len(arr)
-        gap = n // 2
-        while gap > 0:
-            for i in range(gap, n):
+        step  = n // 2
+        while step  > 0:
+            for i in range(step , n):
                 temp = arr[i]
                 j = i
-                while j >= gap and arr[j - gap] > temp:
-                    arr[j] = arr[j - gap]
-                    j -= gap
+                while j >= step  and arr[j - step ] > temp:
+                    arr[j] = arr[j - step ]
+                    j -= step 
                 arr[j] = temp
-            gap //= 2
+            step  //= 2
         return arr
 
     @staticmethod
