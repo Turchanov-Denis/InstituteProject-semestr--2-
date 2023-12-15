@@ -72,20 +72,29 @@ class MemoryRepository(IRepository):
 
     def add(self, item):
         self.items.append(item)
+        print(f"Added: {item.__dict__}")
 
     def update(self, item):
         for i, existing_item in enumerate(self.items):
             if existing_item.user_id == item.user_id:
                 self.items[i] = item
+                print(f"Updated: {item.__dict__}")
                 break
 
     def remove(self, item):
         self.items.remove(item)
+        print(f"Removed: {item.__dict__}")
 
     def get(self, where, order_by):
         return self.items
 
 class MemoryUserRepository(MemoryRepository, IUserRepository):
+    def get(self):
+        users = []
+        for user in self.items:
+            users.append(user)
+        return users
+
     def get_by_id(self, user_id):
         for user in self.items:
             if user.user_id == user_id:
@@ -117,6 +126,8 @@ user_repository = MemoryUserRepository()
 new_user = User(1, "John Doe", "john@example.com", "123-456-7890", "City", Gender.Male)
 user_repository.add(new_user)
 
+new_user1 = User(2, "John Doe1", "john@example.com1", "123-456-7890", "City", Gender.Male)
+user_repository.add(new_user1)
 # Изменение пользователя
 updated_user = User(1, "John Doe Updated", "john@example.com", "123-456-7890", "City", Gender.Male)
 user_repository.update(updated_user)
@@ -126,4 +137,7 @@ user_repository.remove(updated_user)
 
 # Получение пользователей по различным условиям
 users_in_city = user_repository.get_by_city("City")
+print(f"Users in City: {users_in_city}")
+
 female_users = user_repository.get_by_gender(Gender.Female)
+print(f"Female Users: {female_users}")
