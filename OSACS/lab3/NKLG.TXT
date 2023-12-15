@@ -1,0 +1,15 @@
+|------------------------------------------------------------------------------------------|
+|                                      WinMTR statistics                                   |
+|                       Host              -   %  | Sent | Recv | Best | Avrg | Wrst | Last |
+|------------------------------------------------|------|------|------|------|------|------|
+|                                 RT-GM-3 -    0 |   33 |   33 |    1 |    1 |    8 |    2 |
+|          klng-bras4.sz.ip.rostelecom.ru -    0 |   33 |   33 |    4 |    6 |   42 |   10 |
+|               e120-1-vinco.nwtelecom.ru -    0 |   33 |   33 |    3 |    6 |   23 |    3 |
+|                           87.226.181.87 -    0 |   33 |   33 |   28 |   31 |   47 |   30 |
+|                      Request timed out. -  100 |    7 |    0 |    0 |    0 |    0 |    0 |
+|                      Request timed out. -  100 |    7 |    0 |    0 |    0 |    0 |    0 |
+|                      Request timed out. -  100 |    7 |    0 |    0 |    0 |    0 |    0 |
+|                      Request timed out. -  100 |    7 |    0 |    0 |    0 |    0 |    0 |
+|                stormy.newkaliningrad.ru -    0 |   32 |   32 |   27 |   28 |   32 |   32 |
+|________________________________________________|______|______|______|______|______|______|
+   WinMTR v1.00 GPLv2 (original by Appnor MSP - Fully Managed Hosting & Cloud Provider)

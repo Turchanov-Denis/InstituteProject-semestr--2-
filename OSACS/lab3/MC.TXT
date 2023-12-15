@@ -1,0 +1,29 @@
+|------------------------------------------------------------------------------------------|
+|                                      WinMTR statistics                                   |
+|                       Host              -   %  | Sent | Recv | Best | Avrg | Wrst | Last |
+|------------------------------------------------|------|------|------|------|------|------|
+|                                 RT-GM-3 -    0 |   24 |   24 |    1 |    1 |    7 |    2 |
+|          klng-bras4.sz.ip.rostelecom.ru -    0 |   24 |   24 |    4 |    6 |   52 |    7 |
+|               e120-1-vinco.nwtelecom.ru -    0 |   24 |   24 |    3 |    5 |   39 |    3 |
+|     ae16.frkt-cr2.intl.ip.rostelecom.ru -    5 |   21 |   20 |    0 |   32 |   45 |   31 |
+|          msft-decix-01-fra.ntwk.msn.net -    0 |   24 |   24 |   30 |   32 |   57 |   30 |
+|         ae31-0.icr01.fra23.ntwk.msn.net -    0 |   24 |   24 |   31 |   35 |   60 |   60 |
+|       be-100-0.ibr01.fra23.ntwk.msn.net -   34 |    9 |    6 |  270 |  270 |  271 |  270 |
+|         be-2-0.ibr01.zrh21.ntwk.msn.net -   34 |    9 |    6 |    0 |  269 |  270 |  269 |
+|        be-10-0.ibr01.gva20.ntwk.msn.net -    0 |   24 |   24 |  270 |  270 |  271 |  270 |
+|         be-7-0.ibr01.mrs21.ntwk.msn.net -    6 |   17 |   16 |    0 |  270 |  275 |  275 |
+|        be-21-0.ibr01.mrs20.ntwk.msn.net -   38 |    8 |    5 |    0 |  270 |  271 |  270 |
+|          be-14-0.ibr01.sg2.ntwk.msn.net -   38 |    8 |    5 |  270 |  303 |  361 |  270 |
+|           be-1-0.ibr01.sg3.ntwk.msn.net -    0 |   24 |   24 |  269 |  269 |  274 |  269 |
+|        be-12-0.ibr01.per01.ntwk.msn.net -   67 |    6 |    2 |    0 |  269 |  269 |  269 |
+|         be-1-0.ibr01.per30.ntwk.msn.net -    0 |   24 |   24 |  269 |  269 |  270 |  269 |
+|         be-8-0.ibr01.syd23.ntwk.msn.net -    0 |   24 |   24 |  269 |  269 |  272 |  269 |
+|        ae102-0.icr02.syd23.ntwk.msn.net -    0 |   23 |   23 |  270 |  271 |  281 |  270 |
+|                      Request timed out. -  100 |    4 |    0 |    0 |    0 |    0 |    0 |
+|                      Request timed out. -  100 |    4 |    0 |    0 |    0 |    0 |    0 |
+|                      Request timed out. -  100 |    4 |    0 |    0 |    0 |    0 |    0 |
+|                      Request timed out. -  100 |    4 |    0 |    0 |    0 |    0 |    0 |
+|                      Request timed out. -  100 |    4 |    0 |    0 |    0 |    0 |    0 |
+|                            20.70.246.20 -    0 |   23 |   23 |  269 |  270 |  273 |  269 |
+|________________________________________________|______|______|______|______|______|______|
+   WinMTR v1.00 GPLv2 (original by Appnor MSP - Fully Managed Hosting & Cloud Provider)
