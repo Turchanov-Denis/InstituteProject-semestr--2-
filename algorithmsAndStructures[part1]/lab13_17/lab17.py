@@ -10,7 +10,7 @@ def insert(root, key):
     else:
         if key < root.key:
             root.left = insert(root.left, key)
-        else:
+        elif key > root.key:
             root.right = insert(root.right, key)
     return root
 
