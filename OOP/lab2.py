@@ -1,4 +1,5 @@
 # Turchanov Denis 4PM
+# remake
 
 """Создаем класс шаблонный Array3d<> который хранит
 одномерный массив, но выдаёт наружу его как трехмерный.
@@ -15,71 +16,67 @@ GetValues12(in j, int k) ->
 присваивания всех элементов одному значению"""
 
 
-class Array3d:
-    def __init__(self, size):
-        self.size = size
-        self.array = [
-            [[None] * size for _ in range(size)] for _ in range(size)]
+class Array3D:
+    def __init__(self, size_i, size_j, size_k, default_value=None):
+        self.size_i = size_i
+        self.size_j = size_j
+        self.size_k = size_k
+        self.array = [default_value] * (size_i * size_j * size_k)
 
-    def __getitem__(self, i):
-        return self.array[i]
+    def _get_index(self, i, j, k):
+        return i * self.size_j * self.size_k + j * self.size_k + k
 
-    def __setitem__(self, i, value):
-        self.array[i] = value
+    def _is_index_valid(self, i, j, k):
+        return 0 <= i < self.size_i and 0 <= j < self.size_j and 0 <= k < self.size_k
+
+    def __getitem__(self, key):
+        i, j, k = key
+        if self._is_index_valid(i, j, k):
+            return self.array[self._get_index(i, j, k)]
+        else:
+            return None
+
+    def __setitem__(self, key, value):
+        i, j, k = key
+        if self._is_index_valid(i, j, k):
+            self.array[self._get_index(i, j, k)] = value
 
     def GetValue0(self, i):
-        return self.array[i]
+        return self[i, 0, 0]
 
     def GetValue1(self, j):
-        return [row[j] for row in self.array]
+        return self[0, j, 0]
 
     def GetValue2(self, k):
-        return [[cell[k] for cell in row] for row in self.array]
+        return self[0, 0, k]
 
     def GetValue01(self, i, j):
-        return self.array[i][j]
+        return self[i, j, 0]
 
     def GetValue02(self, i, k):
-        return [cell[k] for cell in self.array[i]]
+        return self[i, 0, k]
 
     def GetValue12(self, j, k):
-        return [row[k] for row in self.array[j]]
+        return self[0, j, k]
 
-    def getValue(self, i, j, k):
-        if self.array[i] is None or self.array[i][j] is None or self.array[i][j][k] is None:
-            return None
-        return self.array[i][j][k]
-
-    def SetValue(self, i, j, k, value):
-        if self.array[i] is None:
-            self.array[i] = []
-        if self.array[i][j] is None:
-            self.array[i][j] = []
-        self.array[i][j][k] = value
+    def setValue(self, i, j, k, value):
+        self[i, j, k] = value
 
     @staticmethod
-    def CreateFill(size, value):
-        return Array3d(size).fill(value)
-
-    def fill(self, value):
-        for i in range(self.size):
-            for j in range(self.size):
-                for k in range(self.size):
-                    self.array[i][j][k] = value
-        return self
+    def CreateFill(size_i, size_j, size_k, fill_value):
+        return Array3D(size_i, size_j, size_k, default_value=fill_value)
 
 
-# Пример использования
-arr = Array3d.CreateFill(3, 0)
+arr = Array3D(3, 3, 3, default_value=0)
 
-print(arr[0][1][2])  # Output: 0
-arr[0][1][2] = 5
-print(arr[0][1][2])  # Output: 5
+arr[1, 1, 1] = 42
 
-print(arr.GetValue0(0))  # Output: [0, 5, 0]
-print(arr.GetValue1(1))  # Output: [5, 5, 5]
-print(arr.GetValue2(2))  # Output: [[0, 5, 0], [0, 5, 0], [0, 5, 0]]
-print(arr.GetValue01(0, 1))  # Output: 5
-print(arr.GetValue02(0, 2))  # Output: [0, 5, 0]
-print(arr.GetValue12(1, 2))  # Output: [5, 5, 5]
-print(arr.getValue(0, 1, 2))  # Output: 5
+# Получение значений
+print(arr[1, 1, 1])  # Вывод: 42
+print(arr.GetValue0(1))  # Вывод: 0
+print(arr.GetValue01(1, 1))  # Вывод: 42
+
+# Создание массива и заполнение значениями
+arr_filled = Array3D.CreateFill(2, 2, 2, fill_value=10)
+print(arr_filled[0, 0, 0])  # Вывод: 10
+

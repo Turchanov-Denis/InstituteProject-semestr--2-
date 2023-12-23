@@ -3,7 +3,9 @@
 iNotifyPropertyChanging (уведомление о том, что сейчас вызвано изменение поля в классе, то есть что СЕЙЧАС произойдет изменение) и iNotifyCollectionChanged (уведомление об изменении состояния коллекции: Added- добавление нового элемента: Removed - удаление существующего элемента: Changed - изменение существующего элемента)
 У каждого такого интерфейса должен быть метод для подключения (добавления к классу), который называется add А также метод отключения (удаления из класса), который называется remove"""
 
+# update
 from abc import ABC, abstractmethod
+
 
 class INotifyPropertyChanged(ABC):
     @abstractmethod
@@ -62,6 +64,22 @@ class Collection(INotifyPropertyChanged, INotifyPropertyChanging, INotifyCollect
         # Notify Collection Changed (Added)
         self._notify_collection_changed(INotifyCollectionChanged.ADDED)
 
+        # Display the collection
+        self._display_collection()
+
+    def undo_element_addition(self):
+        # In a real-world scenario, you'd implement proper undo functionality here.
+        # For demonstration purposes, we'll just remove the last element added.
+        if self._elements:
+            del self._elements[-1]
+            self._notify_collection_changed(INotifyCollectionChanged.REMOVED)
+
+        # Display the collection
+        self._display_collection()
+
+    def _display_collection(self):
+        print("Current Collection:", self._elements)
+
     def _notify_property_changed(self):
         for listener in self._listeners[INotifyPropertyChanged]["Changed"]:
             listener()
@@ -98,3 +116,6 @@ collection.add_listener(INotifyCollectionChanged, INotifyCollectionChanged.ADDED
 collection.add_listener(INotifyCollectionChanged, INotifyCollectionChanged.CHANGED, changed_callback)
 
 collection.add_element(123)
+collection.add_element(111)
+# В реальном мире, здесь была бы логика для отмены изменений
+collection.undo_element_addition()
