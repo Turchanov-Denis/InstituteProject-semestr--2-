@@ -59,8 +59,8 @@ class Array3D:
     def GetValue12(self, j, k):
         return self[0, j, k]
 
-    def setValue(self, i, j, k, value):
-        self[i, j, k] = value
+    # def setValue(self, i, j, k, value):
+    #     self[i, j, k] = value
 
     @staticmethod
     def CreateFill(size_i, size_j, size_k, fill_value):
