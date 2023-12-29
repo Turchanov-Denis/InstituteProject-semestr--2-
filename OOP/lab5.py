@@ -1,100 +1,116 @@
-# Turchanov Denis 4PM
-"""Создать 3 интерфейса: iNotifyPropertyChanged (уведомление при изменении поля в классе).
-iNotifyPropertyChanging (уведомление о том, что сейчас вызвано изменение поля в классе, то есть что СЕЙЧАС произойдет изменение) и iNotifyCollectionChanged (уведомление об изменении состояния коллекции: Added- добавление нового элемента: Removed - удаление существующего элемента: Changed - изменение существующего элемента)
-У каждого такого интерфейса должен быть метод для подключения (добавления к классу), который называется add А также метод отключения (удаления из класса), который называется remove"""
-
-from abc import ABC, abstractmethod
-
-class INotifyPropertyChanged(ABC):
-    @abstractmethod
-    def add_listener(self, callback):
+# Интерфейс уведомления об изменении свойства
+class INotifyPropertyChanged:
+    def add_listener(self, listener):
         pass
 
-    @abstractmethod
-    def remove_listener(self, callback):
+    def remove_listener(self, listener):
         pass
 
 
-class INotifyPropertyChanging(ABC):
-    @abstractmethod
-    def add_listener(self, callback):
+# Интерфейс уведомления о предстоящем изменении свойства
+class INotifyPropertyChanging:
+    def add_listener(self, listener):
         pass
 
-    @abstractmethod
-    def remove_listener(self, callback):
-        pass
-
-
-class INotifyCollectionChanged(ABC):
-    ADDED = "Added"
-    REMOVED = "Removed"
-    CHANGED = "Changed"
-
-    @abstractmethod
-    def add_listener(self, callback):
-        pass
-
-    @abstractmethod
-    def remove_listener(self, callback):
+    def remove_listener(self, listener):
         pass
 
 
-class Collection(INotifyPropertyChanged, INotifyPropertyChanging, INotifyCollectionChanged):
+# Интерфейс уведомления об изменении коллекции
+class INotifyCollectionChanged:
+    def add_listener(self, listener):
+        pass
+
+    def remove_listener(self, listener):
+        pass
+
+
+# Класс, реализующий коллекцию
+class Collection(INotifyCollectionChanged):
     def __init__(self):
-        self._listeners = {
-            INotifyPropertyChanged: {"Changed": []},
-            INotifyPropertyChanging: {"Changing": []},
-            INotifyCollectionChanged: {"Added": [], "Removed": [], "Changed": []}
-        }
-        self._elements = []
+        self.elements = []
+        self.listeners = []
+
+    def add_listener(self, listener):
+        self.listeners.append(listener)
+
+    def remove_listener(self, listener):
+        self.listeners.remove(listener)
 
     def add_element(self, element):
-        changing = False
+        for listener in self.listeners:
+            listener(f"Added element {element}")
 
-        # Notify Property Changing
-        if changing:
-            self._notify_property_changing()
+        self.elements.append(element)
 
-        self._elements.append(element)
+    def change_element(self, index, element):
+        for listener in self.listeners:
+            listener(f"Changed element {self.elements[index]}. New element: {element}")
 
-        self._notify_property_changed()
+        self.elements[index] = element
 
-        # Notify Collection Changed (Added)
-        self._notify_collection_changed(INotifyCollectionChanged.ADDED)
+    def remove_element(self, element):
+        for listener in self.listeners:
+            listener(f"Removed element {element}")
 
-    def _notify_property_changed(self):
-        for listener in self._listeners[INotifyPropertyChanged]["Changed"]:
-            listener()
-
-    def _notify_property_changing(self):
-        for listener in self._listeners[INotifyPropertyChanging]["Changing"]:
-            listener()
-
-    def _notify_collection_changed(self, change_type):
-        for listener in self._listeners[INotifyCollectionChanged][change_type]:
-            listener()
-
-    def add_listener(self, interface, change_type, callback):
-        if interface in self._listeners and change_type in self._listeners[interface]:
-            self._listeners[interface][change_type].append(callback)
-
-    def remove_listener(self, interface, change_type, callback):
-        if interface in self._listeners and change_type in self._listeners[interface]:
-            self._listeners[interface][change_type].remove(callback)
+        self.elements.remove(element)
 
 
-# Пример использования
-def added_callback():
-    print("Added!")
+# Класс, реализующий изменение свойства и предстоящее изменение свойства
+class First(INotifyPropertyChanged, INotifyPropertyChanging):
+    def __init__(self):
+        self._check = 0
+        self.property_changed_listeners = []
+        self.property_changing_listeners = []
+
+    def add_property_changed_listener(self, listener):
+        self.property_changed_listeners.append(listener)
+
+    def remove_property_changed_listener(self, listener):
+        self.property_changed_listeners.remove(listener)
+
+    def add_property_changing_listener(self, listener):
+        self.property_changing_listeners.append(listener)
+
+    def remove_property_changing_listener(self, listener):
+        self.property_changing_listeners.remove(listener)
+
+    def set_check(self, new_value):
+        old_value = self._check
+        flag = True
+        for listener in self.property_changing_listeners:
+            if not listener("Check", old_value, new_value):
+                flag = False
+                break
+        if flag:
+            for listener in self.property_changed_listeners:
+                listener("Check", old_value, new_value)
+            self._check = new_value
 
 
-def changed_callback():
-    print("Changed!")
+
+def property_changed_handler(property_name, old_value, new_value):
+    print(f"Property '{property_name}' changed from {old_value} to {new_value}")
 
 
-collection = Collection()
+def property_changing_handler(property_name, old_value, new_value):
+    print(f"Property '{property_name}' changing from {old_value} to {new_value}")
 
-collection.add_listener(INotifyCollectionChanged, INotifyCollectionChanged.ADDED, added_callback)
-collection.add_listener(INotifyCollectionChanged, INotifyCollectionChanged.CHANGED, changed_callback)
+def collection_changed_handler(status):
+    print(f"Collection changed, status: {status}")
 
-collection.add_element(123)
+
+# Создание экземпляров классов
+collection_instance = Collection()
+first_instance = First()
+
+# Подключение обработчиков событий
+collection_instance.add_listener(collection_changed_handler)
+first_instance.add_property_changed_listener(property_changed_handler)
+first_instance.add_property_changing_listener(property_changing_handler)
+
+# Изменение свойств и коллекции
+collection_instance.add_element(123)
+collection_instance.add_element(321)
+collection_instance.change_element(0, 3456789)
+collection_instance.remove_element(321)
