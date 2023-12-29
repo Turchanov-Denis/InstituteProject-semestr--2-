@@ -1,121 +1,115 @@
-# Turchanov Denis 4PM
-"""Создать 3 интерфейса: iNotifyPropertyChanged (уведомление при изменении поля в классе).
-iNotifyPropertyChanging (уведомление о том, что сейчас вызвано изменение поля в классе, то есть что СЕЙЧАС произойдет изменение) и iNotifyCollectionChanged (уведомление об изменении состояния коллекции: Added- добавление нового элемента: Removed - удаление существующего элемента: Changed - изменение существующего элемента)
-У каждого такого интерфейса должен быть метод для подключения (добавления к классу), который называется add А также метод отключения (удаления из класса), который называется remove"""
-
-# update
-from abc import ABC, abstractmethod
-
-
-class INotifyPropertyChanged(ABC):
-    @abstractmethod
-    def add_listener(self, callback):
+class INotifyPropertyChanged:
+    def add(self, listener):
         pass
 
-    @abstractmethod
-    def remove_listener(self, callback):
+    def remove(self, listener):
+        pass
+
+    def notify_property_changed(self, property_name):
         pass
 
 
-class INotifyPropertyChanging(ABC):
-    @abstractmethod
-    def add_listener(self, callback):
+class INotifyPropertyChanging:
+    def add(self, listener):
         pass
 
-    @abstractmethod
-    def remove_listener(self, callback):
+    def remove(self, listener):
         pass
 
-
-class INotifyCollectionChanged(ABC):
-    ADDED = "Added"
-    REMOVED = "Removed"
-    CHANGED = "Changed"
-
-    @abstractmethod
-    def add_listener(self, callback):
-        pass
-
-    @abstractmethod
-    def remove_listener(self, callback):
+    def notify_property_changing(self, property_name):
         pass
 
 
-class Collection(INotifyPropertyChanged, INotifyPropertyChanging, INotifyCollectionChanged):
-    def __init__(self):
-        self._listeners = {
-            INotifyPropertyChanged: {"Changed": []},
-            INotifyPropertyChanging: {"Changing": []},
-            INotifyCollectionChanged: {"Added": [], "Removed": [], "Changed": []}
-        }
-        self._elements = []
+class INotifyCollectionChanged:
+    def add(self, listener):
+        pass
 
-    def add_element(self, element):
-        changing = False
+    def remove(self, listener):
+        pass
 
-        # Notify Property Changing
-        if changing:
-            self._notify_property_changing()
+    def notify_collection_changed(self, change_type, item=None):
+        pass
 
-        self._elements.append(element)
 
-        self._notify_property_changed()
+# Реализация интерфейсов для класса Array3D
 
-        # Notify Collection Changed (Added)
-        self._notify_collection_changed(INotifyCollectionChanged.ADDED)
+class Array3D(INotifyPropertyChanged, INotifyPropertyChanging, INotifyCollectionChanged):
+    def __init__(self, size):
+        self.data = [[[None] * size[2] for _ in range(size[1])] for _ in range(size[0])]
+        self.listeners_property_changed = []
+        self.listeners_property_changing = []
+        self.listeners_collection_changed = []
 
-        # Display the collection
-        self._display_collection()
+    def add_property_changed_listener(self, listener):
+        self.listeners_property_changed.append(listener)
 
-    def undo_element_addition(self):
-        # In a real-world scenario, you'd implement proper undo functionality here.
-        # For demonstration purposes, we'll just remove the last element added.
-        if self._elements:
-            del self._elements[-1]
-            self._notify_collection_changed(INotifyCollectionChanged.REMOVED)
+    def remove_property_changed_listener(self, listener):
+        self.listeners_property_changed.remove(listener)
 
-        # Display the collection
-        self._display_collection()
+    def notify_property_changed(self, property_name):
+        for listener in self.listeners_property_changed:
+            listener.property_changed(property_name)
 
-    def _display_collection(self):
-        print("Current Collection:", self._elements)
+    def add_property_changing_listener(self, listener):
+        self.listeners_property_changing.append(listener)
 
-    def _notify_property_changed(self):
-        for listener in self._listeners[INotifyPropertyChanged]["Changed"]:
-            listener()
+    def remove_property_changing_listener(self, listener):
+        self.listeners_property_changing.remove(listener)
 
-    def _notify_property_changing(self):
-        for listener in self._listeners[INotifyPropertyChanging]["Changing"]:
-            listener()
+    def notify_property_changing(self, property_name):
+        for listener in self.listeners_property_changing:
+            listener.property_changing(property_name)
 
-    def _notify_collection_changed(self, change_type):
-        for listener in self._listeners[INotifyCollectionChanged][change_type]:
-            listener()
+    def add_collection_changed_listener(self, listener):
+        self.listeners_collection_changed.append(listener)
 
-    def add_listener(self, interface, change_type, callback):
-        if interface in self._listeners and change_type in self._listeners[interface]:
-            self._listeners[interface][change_type].append(callback)
+    def remove_collection_changed_listener(self, listener):
+        self.listeners_collection_changed.remove(listener)
 
-    def remove_listener(self, interface, change_type, callback):
-        if interface in self._listeners and change_type in self._listeners[interface]:
-            self._listeners[interface][change_type].remove(callback)
+    def notify_collection_changed(self, change_type, item=None):
+        for listener in self.listeners_collection_changed:
+            listener.collection_changed(change_type, item)
+
+    def set_element(self, i, j, k, value):
+        self.notify_property_changing("ArrayElement")
+        self.data[i][j][k] = value
+        self.notify_property_changed("ArrayElement")
+        self.notify_collection_changed("Changed", (i, j, k))
+
+    def add_element(self, i, j, k, value):
+        self.notify_property_changing("ArrayAddition")
+        self.data[i][j][k] = value
+        self.notify_property_changed("ArrayAddition")
+        self.notify_collection_changed("Added", (i, j, k))
+
+    def remove_element(self, i, j, k):
+        self.notify_property_changing("ArrayRemoval")
+        removed_item = self.data[i][j][k]
+        self.data[i][j][k] = None
+        self.notify_property_changed("ArrayRemoval")
+        self.notify_collection_changed("Removed", (i, j, k, removed_item))
 
 
 # Пример использования
-def added_callback():
-    print("Added!")
+
+class Listener:
+    def property_changed(self, property_name):
+        print(f"Property {property_name} changed")
+
+    def property_changing(self, property_name):
+        print(f"Property {property_name} changing")
+
+    def collection_changed(self, change_type, item):
+        print(f"Collection changed: {change_type}, item: {item}")
 
 
-def changed_callback():
-    print("Changed!")
+array3d = Array3D((3, 3, 3))
+listener = Listener()
 
+array3d.add_property_changed_listener(listener)
+array3d.add_property_changing_listener(listener)
+array3d.add_collection_changed_listener(listener)
 
-collection = Collection()
-
-collection.add_listener(INotifyCollectionChanged, INotifyCollectionChanged.ADDED, added_callback)
-collection.add_listener(INotifyCollectionChanged, INotifyCollectionChanged.CHANGED, changed_callback)
-
-collection.add_element(123)
-collection.add_element(111)
-# В реальном мире, здесь была бы логика для отмены изменений
-collection.undo_element_addition()
+array3d.set_element(0, 0, 0, 42)
+array3d.add_element(1, 1, 1, 99)
+array3d.remove_element(1, 1, 1)
