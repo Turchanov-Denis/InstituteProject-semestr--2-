@@ -1,115 +1,116 @@
+# Интерфейс уведомления об изменении свойства
 class INotifyPropertyChanged:
-    def add(self, listener):
+    def add_listener(self, listener):
         pass
 
-    def remove(self, listener):
-        pass
-
-    def notify_property_changed(self, property_name):
+    def remove_listener(self, listener):
         pass
 
 
+# Интерфейс уведомления о предстоящем изменении свойства
 class INotifyPropertyChanging:
-    def add(self, listener):
+    def add_listener(self, listener):
         pass
 
-    def remove(self, listener):
-        pass
-
-    def notify_property_changing(self, property_name):
+    def remove_listener(self, listener):
         pass
 
 
+# Интерфейс уведомления об изменении коллекции
 class INotifyCollectionChanged:
-    def add(self, listener):
+    def add_listener(self, listener):
         pass
 
-    def remove(self, listener):
-        pass
-
-    def notify_collection_changed(self, change_type, item=None):
+    def remove_listener(self, listener):
         pass
 
 
-# Реализация интерфейсов для класса Array3D
+# Класс, реализующий коллекцию
+class Collection(INotifyCollectionChanged):
+    def __init__(self):
+        self.elements = []
+        self.listeners = []
 
-class Array3D(INotifyPropertyChanged, INotifyPropertyChanging, INotifyCollectionChanged):
-    def __init__(self, size):
-        self.data = [[[None] * size[2] for _ in range(size[1])] for _ in range(size[0])]
-        self.listeners_property_changed = []
-        self.listeners_property_changing = []
-        self.listeners_collection_changed = []
+    def add_listener(self, listener):
+        self.listeners.append(listener)
+
+    def remove_listener(self, listener):
+        self.listeners.remove(listener)
+
+    def add_element(self, element):
+        for listener in self.listeners:
+            listener(f"Added element {element}")
+
+        self.elements.append(element)
+
+    def change_element(self, index, element):
+        for listener in self.listeners:
+            listener(f"Changed element {self.elements[index]}. New element: {element}")
+
+        self.elements[index] = element
+
+    def remove_element(self, element):
+        for listener in self.listeners:
+            listener(f"Removed element {element}")
+
+        self.elements.remove(element)
+
+
+# Класс, реализующий изменение свойства и предстоящее изменение свойства
+class First(INotifyPropertyChanged, INotifyPropertyChanging):
+    def __init__(self):
+        self._check = 0
+        self.property_changed_listeners = []
+        self.property_changing_listeners = []
 
     def add_property_changed_listener(self, listener):
-        self.listeners_property_changed.append(listener)
+        self.property_changed_listeners.append(listener)
 
     def remove_property_changed_listener(self, listener):
-        self.listeners_property_changed.remove(listener)
-
-    def notify_property_changed(self, property_name):
-        for listener in self.listeners_property_changed:
-            listener.property_changed(property_name)
+        self.property_changed_listeners.remove(listener)
 
     def add_property_changing_listener(self, listener):
-        self.listeners_property_changing.append(listener)
+        self.property_changing_listeners.append(listener)
 
     def remove_property_changing_listener(self, listener):
-        self.listeners_property_changing.remove(listener)
+        self.property_changing_listeners.remove(listener)
 
-    def notify_property_changing(self, property_name):
-        for listener in self.listeners_property_changing:
-            listener.property_changing(property_name)
-
-    def add_collection_changed_listener(self, listener):
-        self.listeners_collection_changed.append(listener)
-
-    def remove_collection_changed_listener(self, listener):
-        self.listeners_collection_changed.remove(listener)
-
-    def notify_collection_changed(self, change_type, item=None):
-        for listener in self.listeners_collection_changed:
-            listener.collection_changed(change_type, item)
-
-    def set_element(self, i, j, k, value):
-        self.notify_property_changing("ArrayElement")
-        self.data[i][j][k] = value
-        self.notify_property_changed("ArrayElement")
-        self.notify_collection_changed("Changed", (i, j, k))
-
-    def add_element(self, i, j, k, value):
-        self.notify_property_changing("ArrayAddition")
-        self.data[i][j][k] = value
-        self.notify_property_changed("ArrayAddition")
-        self.notify_collection_changed("Added", (i, j, k))
-
-    def remove_element(self, i, j, k):
-        self.notify_property_changing("ArrayRemoval")
-        removed_item = self.data[i][j][k]
-        self.data[i][j][k] = None
-        self.notify_property_changed("ArrayRemoval")
-        self.notify_collection_changed("Removed", (i, j, k, removed_item))
+    def set_check(self, new_value):
+        old_value = self._check
+        flag = True
+        for listener in self.property_changing_listeners:
+            if not listener("Check", old_value, new_value):
+                flag = False
+                break
+        if flag:
+            for listener in self.property_changed_listeners:
+                listener("Check", old_value, new_value)
+            self._check = new_value
 
 
-# Пример использования
 
-class Listener:
-    def property_changed(self, property_name):
-        print(f"Property {property_name} changed")
-
-    def property_changing(self, property_name):
-        print(f"Property {property_name} changing")
-
-    def collection_changed(self, change_type, item):
-        print(f"Collection changed: {change_type}, item: {item}")
+def property_changed_handler(property_name, old_value, new_value):
+    print(f"Property '{property_name}' changed from {old_value} to {new_value}")
 
 
-array3d = Array3D((3, 3, 3))
-listener = Listener()
+def property_changing_handler(property_name, old_value, new_value):
+    print(f"Property '{property_name}' changing from {old_value} to {new_value}")
 
-array3d.add_property_changed_listener(listener)
-array3d.add_property_changing_listener(listener)
-array3d.add_collection_changed_listener(listener)
+def collection_changed_handler(status):
+    print(f"Collection changed, status: {status}")
 
-array3d.set_element(0, 0, 0, 42)
-array3d.add_element(1, 1, 1, 99)
-array3d.remove_element(1, 1, 1)
+
+# Создание экземпляров классов
+collection_instance = Collection()
+first_instance = First()
+
+# Подключение обработчиков событий
+collection_instance.add_listener(collection_changed_handler)
+first_instance.add_property_changed_listener(property_changed_handler)
+first_instance.add_property_changing_listener(property_changing_handler)
+
+# Изменение свойств и коллекции
+collection_instance.add_element(123)
+collection_instance.add_element(321)
+collection_instance.change_element(0, 3456789)
+collection_instance.remove_element(321)
