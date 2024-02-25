@@ -1,3 +1,4 @@
+
 class Solution:
     def missingNumber(self, nums: list[int]):
         for i,j in enumerate(sorted(nums)):
