@@ -21,40 +21,7 @@ class Graph:
                 adjacent_vertices.append(i)
         return adjacent_vertices
 
-    def bfs(self, start_vertex):
-        visited = [False] * self.num_vertices
-        queue = [start_vertex]
-        visited[start_vertex] = True
-        traversal = []
-
-        while queue:
-            current_vertex = queue.pop(0)
-            traversal.append(current_vertex)
-
-            for neighbor in self.get_adjacent_vertices(current_vertex):
-                if not visited[neighbor]:
-                    queue.append(neighbor)
-                    visited[neighbor] = True
-
-        return traversal
-
-    def bfs_shortest_distances(self, start_vertex):
-        visited = [False] * self.num_vertices
-        distances = [-1] * self.num_vertices
-        queue = [(start_vertex, 0)]
-
-        while queue:
-            current_vertex, distance = queue.pop(0)
-            distances[current_vertex] = distance
-            visited[current_vertex] = True
-
-            for neighbor in self.get_adjacent_vertices(current_vertex):
-                if not visited[neighbor]:
-                    queue.append((neighbor, distance + 1))
-
-        return distances
-
-    def bfs_components(self):
+    def dfs_components(self):
         visited = [False] * self.num_vertices
         components = []
 
@@ -94,6 +61,5 @@ class Graph:
 if __name__ == "__main__":
     g = Graph.from_json("adjacency_matrix.json")
     # g.draw_graph()
-    print("\nBFS from vertex 0:", g.bfs_shortest_distances(0))
-    print("\nBFS components:", g.bfs_components(), "amount: ",len(g.bfs_components()) )
+    print("\nBFS components:", g.dfs_components(), "amount: ",len(g.dfs_components()) )
     
