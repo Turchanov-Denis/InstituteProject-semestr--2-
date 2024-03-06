@@ -20,7 +20,12 @@ class Graph:
             if self.adj_matrix[v][i] == 1:
                 adjacent_vertices.append(i)
         return adjacent_vertices
-
+    def get_adjacent_verticesS(self, v, transposed_graph):
+        adjacent_vertices = []
+        for i in range(self.num_vertices):
+            if transposed_graph[v][i] == 1:
+                adjacent_vertices.append(i)
+        return adjacent_vertices
     def dfs_components(self, start_vertex):
         visited = [False] * self.num_vertices
         components = []
@@ -39,7 +44,7 @@ class Graph:
                 components.append(component)
         return components
 
-    def dfs_componentsS(self, start_vertex, verticesS):
+    def dfs_componentsS(self, start_vertex, verticesS, transposed_graph):
         print(verticesS)
         visited = [False] * len(verticesS)
         components = []
@@ -51,7 +56,7 @@ class Graph:
                 while queue:
                     current_vertex = queue.pop(0)
                     component.append(current_vertex)
-                    for neighbor in self.get_adjacent_vertices(current_vertex):
+                    for neighbor in self.get_adjacent_verticesS(current_vertex,transposed_graph):
                         if not visited[neighbor]:
                             queue.insert(0, neighbor)
                             visited[neighbor] = True
@@ -63,7 +68,7 @@ class Graph:
         transposed_graph = self.transpose()
         sorted_vertices = sorted(
             range(self.num_vertices), key=lambda x: finish_times[x], reverse=True)
-        return self.dfs_componentsS(sorted_vertices[0], sorted_vertices)
+        return self.dfs_componentsS(sorted_vertices[0], sorted_vertices, transposed_graph)
 
     def dfs(self):
         visited = [False] * self.num_vertices
