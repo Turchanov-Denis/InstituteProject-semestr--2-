@@ -10,7 +10,7 @@ class Graph:
 
     @classmethod
     def from_json(cls, file_path):
-        with open(file_path, 'r') as file:  
+        with open(file_path, 'r') as file:
             adj_matrix = json.load(file)
         return cls(adj_matrix)
 
@@ -21,28 +21,20 @@ class Graph:
                 adjacent_vertices.append(i)
         return adjacent_vertices
 
-    def dfs_components(self):
+    def dfs_components(self, start_vertex):
         visited = [False] * self.num_vertices
-        components = []
+        queue = [start_vertex]
+        visited[start_vertex] = True
+        path = []
+        while queue:
+            current_vertex = queue.pop(0)
+            path.append(current_vertex)
+            for neighbor in self.get_adjacent_vertices(current_vertex):
+                if not visited[neighbor]:
+                    queue.insert(0,neighbor)
+                    visited[neighbor] = True
 
-        for vertex in range(self.num_vertices):
-            if not visited[vertex]:
-                component = []
-                queue = [vertex]
-                visited[vertex] = True
-
-                while queue:
-                    current_vertex = queue.pop(0)
-                    component.append(current_vertex)
-
-                    for neighbor in self.get_adjacent_vertices(current_vertex):
-                        if not visited[neighbor]:
-                            queue.append(neighbor)
-                            visited[neighbor] = True
-
-                components.append(component)
-
-        return components
+        return path
 
     def draw_graph(self):
         G = nx.Graph()
@@ -60,6 +52,5 @@ class Graph:
 
 if __name__ == "__main__":
     g = Graph.from_json("adjacency_matrix.json")
-    # g.draw_graph()
-    print("\nBFS components:", g.dfs_components(), "amount: ",len(g.dfs_components()) )
-    
+    g.draw_graph()
+    print("\nDFS components:", g.dfs_components(0))

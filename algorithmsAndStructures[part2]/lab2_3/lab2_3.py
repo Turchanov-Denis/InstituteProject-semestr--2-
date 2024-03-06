@@ -25,18 +25,17 @@ class Graph:
         visited = [False] * self.num_vertices
         queue = [start_vertex]
         visited[start_vertex] = True
-        traversal = []
+        path = []
 
         while queue:
             current_vertex = queue.pop(0)
-            traversal.append(current_vertex)
-
+            path.append(current_vertex)
             for neighbor in self.get_adjacent_vertices(current_vertex):
                 if not visited[neighbor]:
                     queue.append(neighbor)
                     visited[neighbor] = True
 
-        return traversal
+        return path
 
     def bfs_shortest_distances(self, start_vertex):
         visited = [False] * self.num_vertices
