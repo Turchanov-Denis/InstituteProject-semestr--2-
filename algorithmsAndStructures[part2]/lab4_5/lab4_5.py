@@ -23,18 +23,21 @@ class Graph:
 
     def dfs_components(self, start_vertex):
         visited = [False] * self.num_vertices
-        queue = [start_vertex]
-        visited[start_vertex] = True
-        path = []
-        while queue:
-            current_vertex = queue.pop(0)
-            path.append(current_vertex)
-            for neighbor in self.get_adjacent_vertices(current_vertex):
-                if not visited[neighbor]:
-                    queue.insert(0,neighbor)
-                    visited[neighbor] = True
-
-        return path
+        components = []
+        for vertex in range(self.num_vertices):
+            if not visited[vertex]:
+                component = []
+                queue = [vertex]
+                visited[vertex] = True
+                while queue:
+                    current_vertex = queue.pop(0)
+                    component.append(current_vertex)
+                    for neighbor in self.get_adjacent_vertices(current_vertex):
+                        if not visited[neighbor]:
+                            queue.insert(0, neighbor)
+                            visited[neighbor] = True
+                components.append(component)
+        return components
 
     def draw_graph(self):
         G = nx.Graph()
@@ -51,6 +54,6 @@ class Graph:
 
 
 if __name__ == "__main__":
-    g = Graph.from_json("adjacency_matrix.json")
-    g.draw_graph()
+    g = Graph.from_json("adjacency_matrix[test1].json")
+    # g.draw_graph()
     print("\nDFS components:", g.dfs_components(0))
