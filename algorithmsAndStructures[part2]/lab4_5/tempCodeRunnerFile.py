@@ -1,8 +1,6 @@
-    while queue:
-                    current_vertex = queue.pop(0)
-                    component.append(current_vertex)
-                    for neighbor in self.get_adjacent_vertices(current_vertex):
-                        if not visited[neighbor]:
-                            queue.insert(0, neighbor)
-                            visited[neighbor] = True
-                components.append(component)
+    visited[vertex] = True
+        scc_component.append(vertex)
+
+        for neighbor in range(self.num_vertices):
+            if graph[vertex][neighbor] == 1 and not visited[neighbor]:
+                self.dfs_util(graph, neighbor, visited, finish_times, time, scc_component)
