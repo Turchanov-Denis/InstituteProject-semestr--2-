@@ -1,18 +1,19 @@
 <?php
 header('Content-type: text/plain');
 // task1 
+echo "\n--------------task1-------------\n";
 /* Imagine a lot of code here */
 $very_bad_unclear_name = "15 chicken wings";
-
-
 // Write your code here:
 $order = &$very_bad_unclear_name;
 $order .= "cat";
-
 // Don't change the line below
 echo "Your order is: $order.";
 echo "\n \n";
+
+
 // task2
+echo "\n--------------task2-------------\n";
 $catI = 1;
 echo "$catI";
 echo "\n";
@@ -27,17 +28,26 @@ $lastMonth = 1187.23;
 $thisMonth = 1089.98;
 echo "last month I spent more on: " . $lastMonth - $thisMonth;
 echo "\n \n";
+
+
 // task11
+echo "\n--------------task11-------------\n";
 $numLanguages = 4;
 $month = 11;
 $days = $month * 16;
 $daysPerLanguage = $days / $numLanguages;
 echo "average days : $daysPerLanguage days\n";
 echo "\n \n";
+
+
 // task12
+echo "\n--------------task12-------------\n";
 echo 8 ** 2;
 echo "\n \n";
+
+
 // task13
+echo "\n--------------task13-------------\n";
 $myNum = 233;
 $answer = $myNum;
 $answer += 2;
@@ -46,7 +56,10 @@ $answer -= 2;
 $answer /= 2;
 $answer -= $myNum;
 echo "$answer \n";
+
+
 // task14
+echo "\n--------------task14-------------\n";
 $a = 10;
 $b = 3;
 echo $a % $b;
@@ -97,7 +110,8 @@ echo "\n";
 $a = 111;
 $b = 222;
 $res = abs($a - $b);
-echo $res; echo "\n";
+echo $res;
+echo "\n";
 // alternative
 $a = -111;
 $b = 2;
@@ -105,18 +119,18 @@ $res = abs($a - $b);
 echo $res;
 
 $arrayOfNum = [1, 2, -1, -2, 3, -3];
-$newArr=array();
+$newArr = [];
 foreach ($arrayOfNum as $value) {
     $value = abs($value);
     array_push($newArr, $value);
 }
 echo "abs ";
-print_r ($newArr);
+print_r($newArr);
 echo "\n";
 //
 $ControlNum = rand(1, 1000);
 $i = 1;
-$arr = array();
+$arr = [];
 while ($i <= $ControlNum) {
     if (0 === $ControlNum % $i) {
         array_push($arr, $i);
@@ -124,7 +138,7 @@ while ($i <= $ControlNum) {
     $i++;
 }
 echo " number of divide: $ControlNum";
-print_r ($arr);
+print_r($arr);
 
 $arr1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 $ans = 0;
@@ -137,4 +151,62 @@ foreach ($arr1 as $value) {
     $counter++;
 }
 echo "counter: $counter";
+
+
 // task15
+echo "\n--------------task15-------------\n";
+function printStringReturnNumber()
+{
+    echo "Hello, world!\n";
+    return strlen("Hello, world!");
+}
+$myNum = printStringReturnNumber();
+echo "$myNum\n";
+
+
+// task16
+echo "\n--------------task16-------------\n";
+function increaseEnthusiasm($item){
+    return "$item". "!";
+}
+$string = "Random string";
+echo increaseEnthusiasm($string). "\n";
+//
+
+function repeatThreeTimes($item){
+    return "$item". "$item". "$item";
+}
+echo RepeatThreeTimes($string). "\n";
+//
+
+echo increaseEnthusiasm(RepeatThreeTimes($string)). "\n";
+//
+
+function cut($str, $NumOfSimbols = 10){
+    return substr_replace($str, "", $NumOfSimbols, strlen($str) - $NumOfSimbols);
+}
+echo cut($string, 3). "\n";
+//
+function printArray($arr, $i = 0){
+    echo $arr[$i]. "\n";
+    if(array_key_last($arr) > $i){
+        printArray($arr, ++$i);
+    }
+}
+printArray($arr1);
+echo "\n";
+//
+function sumOfNumbers(int $n){
+    $sum = 0;
+    while($n != 0 ){
+        $sum += $n % 10;
+        $n = intdiv($n, 10);
+    }
+    if($sum >= 10){
+        $sum = sumOfNumbers($sum);
+    }
+    return $sum;
+}
+echo sumOfNumbers(99991). "\n";
+// task17
+echo "\n--------------task17-------------\n";
