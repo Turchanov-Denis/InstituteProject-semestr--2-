@@ -166,59 +166,65 @@ echo "$myNum\n";
 
 // task16
 echo "\n--------------task16-------------\n";
-function increaseEnthusiasm($item){
-    return "$item". "!";
+function increaseEnthusiasm($item)
+{
+    return "$item" . "!";
 }
 $string = "Random string";
-echo increaseEnthusiasm($string). "\n";
+echo increaseEnthusiasm($string) . "\n";
 //
 
-function repeatThreeTimes($item){
-    return "$item". "$item". "$item";
+function repeatThreeTimes($item)
+{
+    return "$item" . "$item" . "$item";
 }
-echo RepeatThreeTimes($string). "\n";
+echo RepeatThreeTimes($string) . "\n";
 //
 
-echo increaseEnthusiasm(RepeatThreeTimes($string)). "\n";
+echo increaseEnthusiasm(RepeatThreeTimes($string)) . "\n";
 //
 
-function cut($str, $NumOfSimbols = 10){
+function cut($str, $NumOfSimbols = 10)
+{
     return substr_replace($str, "", $NumOfSimbols, strlen($str) - $NumOfSimbols);
 }
-echo cut($string, 3). "\n";
+echo cut($string, 3) . "\n";
 //
-function printArray($arr, $i = 0){
-    echo $arr[$i]. "\n";
-    if(array_key_last($arr) > $i){
+function printArray($arr, $i = 0)
+{
+    echo $arr[$i] . "\n";
+    if (array_key_last($arr) > $i) {
         printArray($arr, ++$i);
     }
 }
 printArray($arr1);
 echo "\n";
 //
-function sumBeforeSimple(int $n){
+function sumBeforeSimple(int $n)
+{
     $sum = 0;
-    while($n != 0 ){
+    while ($n != 0) {
         $sum += $n % 10;
         $n = intdiv($n, 10);
     }
-    if($sum >= 10){
+    if ($sum >= 10) {
         $sum = sumBeforeSimple($sum);
     }
     return $sum;
 }
-echo sumBeforeSimple(991). "\n";
+echo sumBeforeSimple(991) . "\n";
 // task17
 echo "\n--------------task17-------------\n";
 $arr17 = [];
-for($i = 0; $i < 10; $i++){
-    $arr17[$i] = str_repeat("x",$i+1);
+for ($i = 0; $i < 10; $i++) {
+    $arr17[$i] = str_repeat("x", $i + 1);
 }
 var_dump($arr17);
 //
-function arrayFill($item, int $n){
+function arrayFill($item, int $n)
+{
     $tmp_arr = [];
-    for($i = 0; $i < $n; $i++){
+    for ($i = 0; $i < $n; $i++) {
         $tmp_arr[$i] = $item;
     }
     return $tmp_arr;
@@ -252,9 +258,9 @@ $result = ($arr173[0] * $arr173[1]) + ($arr173[2] * $arr173[3]);
 echo "Result of operations: $result\n";
 
 $user = [
-    'name' => 'Nero',
-    'surname' => 'Rafu',
-    'patronymic' => 'Mary'
+    'name' => 'Mary',
+    'surname' => 'Johnson',
+    'patronymic' => '-'
 ];
 echo $user['surname'] . ' ' . $user['name'] . ' ' . $user['patronymic'] . "\n";
 
@@ -273,15 +279,17 @@ echo "Second-to-last: " . $arr[count($arr) - 2] . "\n";
 // task18
 echo "\n--------------task18-------------\n";
 
-function checkSum($num1, $num2) {
+function checkSum($num1, $num2)
+{
     return ($num1 + $num2 > 10) ? true : false;
 }
 
-function checkEq($num1, $num2) {
+function checkEq($num1, $num2)
+{
     return ($num1 == $num2) ? true : false;
 }
 
-if ($test == 0) echo 'correct';
+// if ($test == 0) echo 'correct';
 
 $age = 21;
 if ($age < 10 || $age > 99) {
@@ -294,10 +302,31 @@ if ($age < 10 || $age > 99) {
         echo "two-digit";
     }
 }
-
+echo "\n";
+$arr18=[0,0,0];
 if (count($arr18) == 3) {
     echo "Sum of array: " . array_sum($arr18);
 }
 
 // task19
 echo "\n--------------task19-------------\n";
+for ($i = 1; $i <= 20; $i++) {
+    for ($j = 1; $j <= $i; $j++) echo 'x';
+    echo "\n";
+}
+
+// task20
+echo "\n--------------task20-------------\n";
+
+$array20 = [1, 2, 3, 4];
+$average = array_sum($array20) / count($array20);
+
+$sum20 = array_sum(range(1, 100));
+
+$array201 = [4, 9, 16, 25];
+$squareRoots = array_map('sqrt', $array201);
+
+$alphArray = array_combine(range('a', 'z'), range(1, 26));
+
+$string = '1234567890';
+$sumOfPairs = array_sum(str_split($string, 2));
