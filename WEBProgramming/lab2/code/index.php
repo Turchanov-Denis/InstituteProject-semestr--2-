@@ -273,3 +273,31 @@ echo "Second-to-last: " . $arr[count($arr) - 2] . "\n";
 // task18
 echo "\n--------------task18-------------\n";
 
+function checkSum($num1, $num2) {
+    return ($num1 + $num2 > 10) ? true : false;
+}
+
+function checkEq($num1, $num2) {
+    return ($num1 == $num2) ? true : false;
+}
+
+if ($test == 0) echo 'correct';
+
+$age = 21;
+if ($age < 10 || $age > 99) {
+    echo "out of range (10,99)";
+} else {
+    $digitSum = array_sum(str_split($age));
+    if ($digitSum <= 9) {
+        echo "single-digit";
+    } else {
+        echo "two-digit";
+    }
+}
+
+if (count($arr18) == 3) {
+    echo "Sum of array: " . array_sum($arr18);
+}
+
+// task19
+echo "\n--------------task19-------------\n";
