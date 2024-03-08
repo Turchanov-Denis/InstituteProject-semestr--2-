@@ -196,17 +196,80 @@ function printArray($arr, $i = 0){
 printArray($arr1);
 echo "\n";
 //
-function sumOfNumbers(int $n){
+function sumBeforeSimple(int $n){
     $sum = 0;
     while($n != 0 ){
         $sum += $n % 10;
         $n = intdiv($n, 10);
     }
     if($sum >= 10){
-        $sum = sumOfNumbers($sum);
+        $sum = sumBeforeSimple($sum);
     }
     return $sum;
 }
-echo sumOfNumbers(99991). "\n";
+echo sumBeforeSimple(991). "\n";
 // task17
 echo "\n--------------task17-------------\n";
+$arr17 = [];
+for($i = 0; $i < 10; $i++){
+    $arr17[$i] = str_repeat("x",$i+1);
+}
+var_dump($arr17);
+//
+function arrayFill($item, int $n){
+    $tmp_arr = [];
+    for($i = 0; $i < $n; $i++){
+        $tmp_arr[$i] = $item;
+    }
+    return $tmp_arr;
+}
+$arr171 =  arrayFill('x', 5);
+var_dump($arr171);
+//
+$array172 = [[1, 2, 3], [4, 5], [6]];
+$sum = 0;
+foreach ($array172 as $subArray) {
+    foreach ($subArray as $value) {
+        $sum += $value;
+    }
+}
+echo "Sum of array: $sum\n";
+
+$arr172 = [];
+$count = 1;
+for ($i = 0; $i < 3; $i++) {
+    $temp = [];
+    for ($j = 0; $j < 3; $j++) {
+        $temp[] = $count;
+        $count++;
+    }
+    $arr172[] = $temp;
+}
+print_r($arr172);
+
+$arr173 = [2, 5, 3, 9];
+$result = ($arr173[0] * $arr173[1]) + ($arr173[2] * $arr173[3]);
+echo "Result of operations: $result\n";
+
+$user = [
+    'name' => 'Nero',
+    'surname' => 'Rafu',
+    'patronymic' => 'Mary'
+];
+echo $user['surname'] . ' ' . $user['name'] . ' ' . $user['patronymic'] . "\n";
+
+$date = [
+    'year' => date('Y'),
+    'month' => date('m'),
+    'day' => date('d')
+];
+echo "{$date['year']}-{$date['month']}-{$date['day']}\n";
+
+$arr = ['a', 'b', 'c', 'd', 'e'];
+echo "Number of elements: " . count($arr) . "\n";
+echo "Last element: " . end($arr) . "\n";
+echo "Second-to-last: " . $arr[count($arr) - 2] . "\n";
+
+// task18
+echo "\n--------------task18-------------\n";
+
