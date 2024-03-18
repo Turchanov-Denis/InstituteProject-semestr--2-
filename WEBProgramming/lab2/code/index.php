@@ -14,14 +14,14 @@ echo "\n \n";
 
 // task2
 echo "\n--------------task2-------------\n";
-$catI = 1;
-echo "$catI";
+$catInt = 1;
+echo "$catInt";
 echo "\n";
-$catF = 3.14;
-echo $catF;
+$catFloat = 3.14;
+echo $catFloat;
 echo "\n";
 
-echo $catI * 4 + 8;
+echo $catInt * 4 + 8;
 echo "\n";
 
 $lastMonth = 1187.23;
@@ -144,7 +144,7 @@ $arr1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 $ans = 0;
 $counter = 0;
 foreach ($arr1 as $value) {
-    if ($ans > 10) {
+    if (10 < $ans ) {
         break;
     }
     $ans += $value;
@@ -207,7 +207,7 @@ function sumBeforeSimple(int $n)
         $sum += $n % 10;
         $n = intdiv($n, 10);
     }
-    if ($sum >= 10) {
+    if (10 <= $sum ) {
         $sum = sumBeforeSimple($sum);
     }
     return $sum;
@@ -281,7 +281,7 @@ echo "\n--------------task18-------------\n";
 
 function checkSum($num1, $num2)
 {
-    return ($num1 + $num2 > 10) ? true : false;
+    return (10 < $num1 + $num2 ) ? true : false;
 }
 
 function checkEq($num1, $num2)
@@ -296,14 +296,14 @@ if ($age < 10 || $age > 99) {
     echo "out of range (10,99)";
 } else {
     $digitSum = array_sum(str_split($age));
-    if ($digitSum <= 9) {
+    if (9 >= $digitSum) {
         echo "single-digit";
     } else {
         echo "two-digit";
     }
 }
 echo "\n";
-$arr18=[0,0,0];
+$arr18 = [0, 0, 0];
 if (count($arr18) == 3) {
     echo "Sum of array: " . array_sum($arr18);
 }
