@@ -155,7 +155,7 @@ echo "counter: $counter";
 
 // task15
 echo "\n--------------task15-------------\n";
-function printStringReturnNumber()
+function printStringReturnNumber(): int
 {
     echo "Hello, world!\n";
     return strlen("Hello, world!");
@@ -166,7 +166,7 @@ echo "$myNum\n";
 
 // task16
 echo "\n--------------task16-------------\n";
-function increaseEnthusiasm(string $item)
+function increaseEnthusiasm(string $item): string
 {
     return "$item" . "!";
 }
@@ -174,7 +174,7 @@ $string = "Random string";
 echo increaseEnthusiasm($string) . "\n";
 //
 
-function repeatThreeTimes(string $item)
+function repeatThreeTimes(string $item): string
 {
     return "$item" . "$item" . "$item";
 }
@@ -184,7 +184,7 @@ echo RepeatThreeTimes($string) . "\n";
 echo increaseEnthusiasm(RepeatThreeTimes($string)) . "\n";
 //
 
-function cut(string $str, int $NumOfSimbols = 10)
+function cut(string $str, int $NumOfSimbols = 10): string
 {
     return substr_replace($str, "", $NumOfSimbols, strlen($str) - $NumOfSimbols);
 }
@@ -200,7 +200,7 @@ function printArray($arr, $i = 0)
 printArray($arr1);
 echo "\n";
 //
-function sumBeforeSimple(int $n)
+function sumBeforeSimple(int $n): int
 {
     $sum = 0;
     while ($n != 0) {
@@ -279,12 +279,12 @@ echo "Second-to-last: " . $arr[count($arr) - 2] . "\n";
 // task18
 echo "\n--------------task18-------------\n";
 
-function checkSum(int $num1, int $num2)
+function checkSum(int $num1, int $num2): bool
 {
     return (10 < $num1 + $num2) ? true : false;
 }
 
-function checkEq(int $num1, int $num2)
+function checkEq(int $num1, int $num2): bool
 {
     return ($num1 === $num2) ? true : false;
 }
