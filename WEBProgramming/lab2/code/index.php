@@ -65,7 +65,7 @@ $b = 3;
 echo $a % $b;
 echo "\n";
 //
-if (0 == $a % $b) {
+if (0 === $a % $b) {
     echo "divide ";
     echo $a / $b;
     echo "\n";
@@ -144,7 +144,7 @@ $arr1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 $ans = 0;
 $counter = 0;
 foreach ($arr1 as $value) {
-    if (10 < $ans ) {
+    if (10 < $ans) {
         break;
     }
     $ans += $value;
@@ -166,7 +166,7 @@ echo "$myNum\n";
 
 // task16
 echo "\n--------------task16-------------\n";
-function increaseEnthusiasm($item)
+function increaseEnthusiasm(string $item)
 {
     return "$item" . "!";
 }
@@ -174,7 +174,7 @@ $string = "Random string";
 echo increaseEnthusiasm($string) . "\n";
 //
 
-function repeatThreeTimes($item)
+function repeatThreeTimes(string $item)
 {
     return "$item" . "$item" . "$item";
 }
@@ -184,7 +184,7 @@ echo RepeatThreeTimes($string) . "\n";
 echo increaseEnthusiasm(RepeatThreeTimes($string)) . "\n";
 //
 
-function cut($str, $NumOfSimbols = 10)
+function cut(string $str, int $NumOfSimbols = 10)
 {
     return substr_replace($str, "", $NumOfSimbols, strlen($str) - $NumOfSimbols);
 }
@@ -207,7 +207,7 @@ function sumBeforeSimple(int $n)
         $sum += $n % 10;
         $n = intdiv($n, 10);
     }
-    if (10 <= $sum ) {
+    if (10 <= $sum) {
         $sum = sumBeforeSimple($sum);
     }
     return $sum;
@@ -279,17 +279,17 @@ echo "Second-to-last: " . $arr[count($arr) - 2] . "\n";
 // task18
 echo "\n--------------task18-------------\n";
 
-function checkSum($num1, $num2)
+function checkSum(int $num1, int $num2)
 {
-    return (10 < $num1 + $num2 ) ? true : false;
+    return (10 < $num1 + $num2) ? true : false;
 }
 
-function checkEq($num1, $num2)
+function checkEq(int $num1, int $num2)
 {
-    return ($num1 == $num2) ? true : false;
+    return ($num1 === $num2) ? true : false;
 }
 
-// if ($test == 0) echo 'correct';
+// if (0 === $test) echo 'correct';
 
 $age = 21;
 if ($age < 10 || $age > 99) {
@@ -304,7 +304,7 @@ if ($age < 10 || $age > 99) {
 }
 echo "\n";
 $arr18 = [0, 0, 0];
-if (count($arr18) == 3) {
+if (3 === count($arr18)) {
     echo "Sum of array: " . array_sum($arr18);
 }
 
