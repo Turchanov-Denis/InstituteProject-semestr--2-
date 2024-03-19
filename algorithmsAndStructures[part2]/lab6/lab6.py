@@ -1,9 +1,12 @@
 import json
+import matplotlib.pyplot as plt
+import networkx as nx
 
 
 class Graph():
     def __init__(self):
         self.graph = {}  # {'A': {'B': 5, 'D': 3}, 'B': {'A': 5, 'C': 2}} // example
+
 
     @classmethod
     def from_json(cls, file_path):
@@ -30,6 +33,11 @@ class Graph():
             return i
         return self.find(parent, parent[i])
 
+    def union(self, parent, x, y):
+        x_root = self.find(parent, x)
+        y_root = self.find(parent, y)
+        parent[x_root] = y_root
+
     def kruskala(self):
         result = []
         edges = []
@@ -42,15 +50,23 @@ class Graph():
         for u, v, _ in edges:
             parent[u] = u
             parent[v] = v
-        print(parent)
+        print(self.graph)
         for edge in edges:
             u, v, w = edge
             x = self.find(parent, u)
             y = self.find(parent, v)
             if x != y:
                 result.append((u, v, w))
-
+                self.union(parent, x, y)
         return result
+
+    def edges(self):
+        edges = []
+        for u in self.graph.keys():
+            for v, w in self.graph[u].items():
+                edges.append((u, v, w))
+        edges.sort(key=lambda x: x[2])
+        return edges
 
 
 if __name__ == "__main__":
