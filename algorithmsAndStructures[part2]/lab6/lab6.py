@@ -1,7 +1,8 @@
 import json
 import matplotlib.pyplot as plt
 import networkx as nx
-
+import copy
+import sys
 
 class Graph():
     def __init__(self):
@@ -23,7 +24,7 @@ class Graph():
         # не нравица что тупо дублируется ветка if - elif, но зато работает
         G1 = nx.DiGraph()
         G2 = nx.DiGraph()
-        if isinstance(graph_data, dict):  
+        if isinstance(graph_data, dict):
             for node in graph_data:
                 G1.add_node(node)
 
@@ -31,13 +32,13 @@ class Graph():
                 for edge, weight in edges.items():
                     G1.add_edge(node, edge, weight=weight)
 
-        elif isinstance(graph_data, list):  
+        elif isinstance(graph_data, list):
             for edge in graph_data:
                 source, target, weight = edge
                 G1.add_edge(source, target, weight=weight)
         #  2 arg tree begin -> compose -> view
         if graph_data_ext:
-            if isinstance(graph_data_ext, dict):  
+            if isinstance(graph_data_ext, dict):
                 for node in graph_data_ext:
                     G2.add_node(node)
 
@@ -45,7 +46,7 @@ class Graph():
                     for edge, weight in edges.items():
                         G2.add_edge(node, edge, weight=weight)
 
-            elif isinstance(graph_data_ext, list):  
+            elif isinstance(graph_data_ext, list):
                 for edge in graph_data_ext:
                     source, target, weight = edge
                     G2.add_edge(source, target, weight=weight)
@@ -123,6 +124,36 @@ class Graph():
                 self.union(parent, x, y)
         return result
 
+    def prime(self):
+        result = []
+        start_vertex = list(self.graph.keys())[2]
+        visited = set()
+        visited.add(start_vertex)
+        edges = self.edges()
+        v = copy.deepcopy(visited)
+        while len(visited) != len(self.graph):
+            for u in visited:
+                if list(filter(lambda x: u in x, edges)) != []:
+                    min_edge = min(list(filter(lambda x: u in x[0], edges))+list(filter(lambda x: u in x[1], edges)))
+                    if min_edge not in result:
+                        edges.remove(min_edge)
+                        t = list(min_edge)
+                        [t[0], t[1]] = [t[1], t[0]]
+                        edges.remove(tuple(t))
+                        if ((min_edge[0] not in visited) or (min_edge[1] not in visited)):
+                            result.append(min_edge)
+                            if min_edge[0] == u:
+                                uu = min_edge[1]
+                                v.add(min_edge[1])
+                            else:
+                                v.add(min_edge[0])
+                                uu = min_edge[0]
+
+                visited = copy.deepcopy(v)
+
+        return result
+        
+
     def edges(self):
         edges = []
         for u in self.graph.keys():
@@ -135,5 +166,7 @@ class Graph():
 if __name__ == "__main__":
     graph = Graph.from_json("adjacency_matrix_lab_6.json")
 
-    graph.draw_graph(graph.graph, graph.kruskala())
-    print(graph.kruskala())
+    # graph.draw_graph(graph.graph, graph.kruskala())
+    # print(graph.kruskala())
+    print(graph.edges())
+    graph.draw_graph(graph.graph, graph.prime())
