@@ -126,30 +126,26 @@ class Graph():
 
     def prime(self):
         result = []
-        start_vertex = list(self.graph.keys())[2]
         visited = set()
-        visited.add(start_vertex)
-        edges = self.edges()
-        v = copy.deepcopy(visited)
-        while len(visited) != len(self.graph):
-            for u in visited:
-                if list(filter(lambda x: u in x, edges)) != []:
-                    min_edge = min(list(filter(lambda x: u in x[0], edges))+list(filter(lambda x: u in x[1], edges)))
-                    if min_edge not in result:
-                        edges.remove(min_edge)
-                        t = list(min_edge)
-                        [t[0], t[1]] = [t[1], t[0]]
-                        edges.remove(tuple(t))
-                        if ((min_edge[0] not in visited) or (min_edge[1] not in visited)):
-                            result.append(min_edge)
-                            if min_edge[0] == u:
-                                uu = min_edge[1]
-                                v.add(min_edge[1])
-                            else:
-                                v.add(min_edge[0])
-                                uu = min_edge[0]
 
-                visited = copy.deepcopy(v)
+        start_vertex = list(self.graph.keys())[0]
+
+        visited.add(start_vertex)
+
+        while len(visited) < len(self.graph):
+            min_weight = sys.maxsize
+            min_edge = None
+
+            for u in visited:
+                for v, weight in self.graph[u].items():
+                    if v not in visited and weight < min_weight:
+                        min_weight = weight
+                        min_edge = (u, v, weight)
+
+            if min_edge:
+                u, v, weight = min_edge
+                result.append((u, v, weight))
+                visited.add(v)
 
         return result
         
