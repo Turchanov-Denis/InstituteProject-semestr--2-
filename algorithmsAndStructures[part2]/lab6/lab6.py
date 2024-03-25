@@ -161,7 +161,6 @@ class Graph():
 
 if __name__ == "__main__":
     graph = Graph.from_json("adjacency_matrix_lab_6.json")
-
     # graph.draw_graph(graph.graph, graph.kruskala())
     # print(graph.kruskala())
     print(graph.edges())
