@@ -4,6 +4,7 @@ import networkx as nx
 import copy
 import sys
 
+
 class Graph():
     def __init__(self):
         self.graph = {}  # {'A': {'B': 5, 'D': 3}, 'B': {'A': 5, 'C': 2}} // example
@@ -114,7 +115,7 @@ class Graph():
         for u, v, _ in edges:
             parent[u] = u
             parent[v] = v
-        print(self.graph)
+        print(edges)
         for edge in edges:
             u, v, w = edge
             x = self.find(parent, u)
@@ -148,7 +149,6 @@ class Graph():
                 visited.add(v)
 
         return result
-        
 
     def edges(self):
         edges = []
@@ -161,7 +161,6 @@ class Graph():
 
 if __name__ == "__main__":
     graph = Graph.from_json("adjacency_matrix_lab_6.json")
-    # graph.draw_graph(graph.graph, graph.kruskala())
     # print(graph.kruskala())
-    print(graph.edges())
-    graph.draw_graph(graph.graph, graph.prime())
+    graph.draw_graph(graph.graph, graph.kruskala())
+    # graph.draw_graph(graph.graph, graph.prime())
