@@ -15,4 +15,4 @@ def calculate_a(n):
     return a
 
 result2 = calculate_a(100)
-print("a_100 =", result2[-1])
+print("a_100 =", result2)
