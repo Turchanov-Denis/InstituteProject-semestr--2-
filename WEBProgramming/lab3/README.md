@@ -15,3 +15,8 @@ And redirect on output subtask2-3:
 
 ![task2](docs/task2.3.png)
 ![task2](docs/task2.4.png)
+
+## Task3: File
+### Link: http://php-docker.local:8080/
+![task2](docs/task3.1.png)
+![task2](docs/task3.2.png)
