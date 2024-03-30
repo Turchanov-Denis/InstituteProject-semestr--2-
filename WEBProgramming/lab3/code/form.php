@@ -30,6 +30,16 @@
         </form>
     </div>
 
+    <div style="padding: 100px;">
+        <form action="save-user-array.php" method="post">
+            Name: <input type="text" name="arrayName"><br>
+            Age: <input type="number" name="arrayAge"><br>
+            Salary: <input type="text" name="salary"><br>
+            Hobby: <input type="text" name="hobby"><br>
+            <input type="submit" value="Save User Array Data">
+        </form>
+    </div>
+
 </body>
 
 </html>

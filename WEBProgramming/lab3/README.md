@@ -6,3 +6,12 @@
 ## Task2: Form. Sessions and Cookies
 ### Link: https://php-docker.local:8080/form.php
 
+![task2](docs/task2.1.png)
+
+Output subtask1 + input subtask2-3:
+![task2](docs/task2.2.png)
+
+And redirect on output subtask2-3:
+
+![task2](docs/task2.3.png)
+![task2](docs/task2.4.png)
