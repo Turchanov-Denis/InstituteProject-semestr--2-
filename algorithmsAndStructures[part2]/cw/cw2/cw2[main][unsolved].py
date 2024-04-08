@@ -6,16 +6,17 @@ class TreeNode(object):
         self.right = right
 
 
-def inversTree(root):
-    stack = [root]
-    while stack:
-        node = stack.pop()
-        node.left, node.right = node.right, node.left
-        if node.right:
-            stack.append(node.right)
-        if node.left:
-            stack.append(node.left)
-    return root
+class Solution:
+    def invertTree(self, root):
+        stack = [root]
+        while stack:
+            node = stack.pop()
+            node.left, node.right = node.right, node.left
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
+        return root
 
 
-print(inversTree(TreeNode(2, TreeNode(1), TreeNode(3))).left.val)
+print(Solution().invertTree([]))

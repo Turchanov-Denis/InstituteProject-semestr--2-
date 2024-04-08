@@ -13,6 +13,7 @@ class Graph():
     def from_json(cls, file_path):
         with open(file_path, 'r') as file:
             data = json.load(file)
+        print(data)
         graph = cls()
         for i, u in enumerate(data["nodes"]):
             for j, v in enumerate(data["nodes"]):
@@ -89,10 +90,6 @@ class Graph():
             self.graph[u] = {}
         self.graph[u][v] = w
 
-        if v not in self.graph:
-            self.graph[v] = {}
-        self.graph[v][u] = w
-
     def find(self, parent, i):
         if parent[i] == i:
             return i
@@ -107,15 +104,17 @@ class Graph():
         result = []
         edges = []
         parent = {}
+        print(self.graph)
+        
         for u in self.graph.keys():
             for v, w in self.graph[u].items():
                 edges.append((u, v, w))
         edges.sort(key=lambda x: x[2])
+        print(edges)
 
         for u, v, _ in edges:
             parent[u] = u
             parent[v] = v
-        print(edges)
         for edge in edges:
             u, v, w = edge
             x = self.find(parent, u)
@@ -128,7 +127,6 @@ class Graph():
     def prime(self):
         result = []
         visited = set()
-
         start_vertex = list(self.graph.keys())[0]
 
         visited.add(start_vertex)
@@ -161,6 +159,6 @@ class Graph():
 
 if __name__ == "__main__":
     graph = Graph.from_json("adjacency_matrix_lab_6.json")
-    # print(graph.kruskala())
-    graph.draw_graph(graph.graph, graph.kruskala())
+    print(graph.kruskala())
+    # graph.draw_graph(graph.graph, graph.kruskala())
     # graph.draw_graph(graph.graph, graph.prime())
