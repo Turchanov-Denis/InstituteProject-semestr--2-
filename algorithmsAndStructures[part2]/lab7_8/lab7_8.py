@@ -31,8 +31,8 @@ class Graph:
         graph.source = data
         return graph
 
-    def Dijkstra(self, start):
-        INF = 10 ** 10
+    def dijkstra(self, start):
+        INF = float('inf')
         n = len(self.nodes)
         dist = {node: INF for node in self.nodes}
         dist[start] = 0
@@ -53,7 +53,23 @@ class Graph:
         return dist
 
 
+    def bellman(self, start):
+        INF = float('inf')
+        distances = {node: INF for node in self.nodes}
+        distances[start] = 0
+
+        for _ in range(len(self.nodes) - 1):
+            for from_node, neighbors in self.graph.items():
+                for to_node, weight in neighbors.items():
+                    if distances[from_node] + weight < distances[to_node]:
+                        distances[to_node] = distances[from_node] + weight
+
+        return distances
+
+
 if __name__ == "__main__":
     graph = Graph.from_json("adjacency_matrix_lab_6.json")
-    print(graph.Dijkstra('A'))
-    print("Source", graph.source['nodes'] , "\n", np.matrix(graph.source['adjacency_matrix']))
+    # print(graph.dijkstra('A'))
+    print(graph.bellman('A'))
+    print("Source", graph.source['nodes'], "\n",
+          np.matrix(graph.source['adjacency_matrix']))
