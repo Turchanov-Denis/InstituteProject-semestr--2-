@@ -45,10 +45,10 @@
                 $client->setAccessType('offline');
                 $client->setAuthConfig('client_credentials.json');
 
-                $service = new Google_Service_Sheets($client);
+                $service = new \Google\Service\Sheets($client);
                 $spreadsheetId = "1Ai50d9Tgna-4UQupehqZTw29L8lhrPoXY6NhMDZjBZQ";
                 $listName = "List1";
-
+                
                 $rows = $service->spreadsheets_values->get($spreadsheetId, $listName)->getValues();
                 foreach ($rows as $row) {
                     echo "<tr>";
