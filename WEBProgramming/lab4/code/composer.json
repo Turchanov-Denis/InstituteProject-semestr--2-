@@ -13,5 +13,7 @@
             "email": "96124363+Turchanov-Denis@users.noreply.github.com"
         }
     ],
-    "require": {}
+    "require": {
+        "google/apiclient": "2.15.0"
+    }
 }

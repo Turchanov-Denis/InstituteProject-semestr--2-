@@ -9,27 +9,22 @@
 </head>
 
 <body>
-    <div id="form">
-    <h3>Create</h3>
-        <form action="save.php" method="post">
-            <label for="email">Email</label>
-            <input type="email" name="email" required>
-            <label for="category">Category</label>
-            <select name="category" required>
-                <?php
-                $categories = scandir("./categories/");
-                foreach ($categories as $category) {
-                    if ('.' != $category && '..' != $category) {
-                        echo "<option value=\"$category\">$category</option>";
-                    }
-                }
-                ?>
+    <div id="root">
+        <h1>Sell your product</h1>
+        <form action="./publish.php" method="post">
+            <label for="category">Select the category</label>
+            <select name="category" id="category" required>
+                <option value="cars">cars</option>
+                <option value="phones">phones</option>
+                <option value="other">other</option>
             </select>
-            <label for="title">Title</label>
+            <label for="email">Your contact email</label>
+            <input type="email" name="email" required>
+            <label for="title">Product title</label>
             <input type="text" name="title" required>
             <label for="description">Description</label>
-            <textarea rows="3" name="description"></textarea>
-            <input type="submit" value="save">
+            <textarea name="description" cols="60" rows="4" required></textarea>
+            <button type="submit">Publish</button>
         </form>
     </div>
     <div id="table">
@@ -42,26 +37,25 @@
                 <th>Description</th>
             </thead>
             <tbody>
-            <?php
-                for ($i = 2; $i < count($categories); $i++) {
-                    $category = $categories[$i];
-                    $emails = scandir("./categories/{$category}");
-                    for ($j = 2; $j < count($emails); $j++) {
-                        $email = $emails[$j];
-                        $categories = scandir("./categories/{$category}/{$email}");
-                        for ($k = 2; $k < count($categories); $k++) {
-                            $title = $categories[$k];
-                            $desc = file_get_contents("./categories/{$category}/{$email}/{$title}");
-                            $categoryDisplay = ucfirst($category);
-                            $formattedTitle = substr($title, 0, strlen($title) - 4);
-                            echo "<tr>";
-                            echo "<td>$categoryDisplay</td>";
-                            echo "<td>$formattedTitle</td>";
-                            echo "<td>$email</td>";
-                            echo "<td>$desc</td>";
-                            echo "</tr>";
-                        }
+                <?php
+                require('vendor/autoload.php');
+                $client = new Google_Client();
+                $client->setApplicationName('WebLab4');
+                $client->setScopes(['https://www.googleapis.com/auth/spreadsheets']);
+                $client->setAccessType('offline');
+                $client->setAuthConfig('client_credentials.json');
+
+                $service = new Google_Service_Sheets($client);
+                $spreadsheetId = "1Ai50d9Tgna-4UQupehqZTw29L8lhrPoXY6NhMDZjBZQ";
+                $listName = "List1";
+
+                $rows = $service->spreadsheets_values->get($spreadsheetId, $listName)->getValues();
+                foreach ($rows as $row) {
+                    echo "<tr>";
+                    foreach ($row as $cell) {
+                        echo "<td>$cell</td>";
                     }
+                    echo "</tr>";
                 }
                 ?>
             </tbody>
