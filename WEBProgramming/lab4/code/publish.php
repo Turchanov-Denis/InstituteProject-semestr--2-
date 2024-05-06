@@ -6,10 +6,9 @@ if (true === isset($_POST['email'], $_POST['category'], $_POST['title'], $_POST[
     $client->setScopes(['https://www.googleapis.com/auth/spreadsheets']);
     $client->setAccessType('offline');
     $client->setAuthConfig('client_credentials.json');
-
     $service = new \Google\Service\Sheets($client);
     $spreadsheetId = "1Ai50d9Tgna-4UQupehqZTw29L8lhrPoXY6NhMDZjBZQ";
-    $listName = "List1";
+    $listName = "List1"; //
 
     $email = $_POST['email'];
     $category = $_POST['category'];
