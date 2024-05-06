@@ -69,7 +69,7 @@ class Graph:
 
 if __name__ == "__main__":
     graph = Graph.from_json("adjacency_matrix_lab_6.json")
-    # print(graph.dijkstra('A'))
+    print(graph.dijkstra('A'))
     print(graph.bellman('A'))
     print("Source", graph.source['nodes'], "\n",
           np.matrix(graph.source['adjacency_matrix']))
