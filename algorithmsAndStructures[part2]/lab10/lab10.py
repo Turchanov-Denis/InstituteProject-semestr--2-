@@ -2,6 +2,7 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
+import copy
 
 
 class Graph:
@@ -18,8 +19,6 @@ class Graph:
         # Ensure all nodes are tracked
         if from_node not in self.nodes:
             self.nodes.append(from_node)
-        if to_node not in self.nodes:
-            self.nodes.append(to_node)
 
     @classmethod
     def from_json(cls, file_path):
@@ -43,28 +42,33 @@ class Graph:
         nx.draw(G, with_labels=True, font_weight='bold')
         plt.show()
 
-    def fleury(self):
+    def fleury(self, inNode):
         eulerian_cycle = []
+        graph = copy.deepcopy(self.graph)
         num_nodes = len(self.nodes)
-        start_node = self.nodes[0]
+        start_node = inNode
         while len(eulerian_cycle) < num_nodes:
             for node in eulerian_cycle:
-                if self.graph[node]:
+                if not graph[node]:
                     start_node = node
-                    break
+                    return 'not found'
             temp_cycle = [start_node]
-            while self.graph[start_node]:
-                next_node = list(self.graph[start_node].keys())[0]
+            while graph[start_node]:
+                next_node = list(graph[start_node].keys())[0]
+                edge_weight = graph[start_node].pop(next_node)
+                if not graph[start_node]:
+                    del graph[start_node]
+                del graph[next_node][start_node]
 
-                edge_weight = self.graph[start_node].pop(next_node)
-                if not self.graph[start_node]:
-                    del self.graph[start_node]
-                del self.graph[next_node][start_node]
+                if temp_cycle[0] != temp_cycle[-1] or (len(temp_cycle)==1):
 
-                temp_cycle.append(next_node)
+                    temp_cycle.append(next_node)
+
                 start_node = next_node
             # Combine  temporary cycle in main
-            eulerian_cycle += temp_cycle[temp_cycle.index(start_node):]
+            if temp_cycle[0] != temp_cycle[-1]:
+                return 'not found'
+            eulerian_cycle += temp_cycle
 
         return eulerian_cycle
 
@@ -73,5 +77,6 @@ if __name__ == "__main__":
     graph = Graph.from_json("adjacency_matrix_lab_6.json")
     print("Source", graph.source['nodes'], "\n",
           np.matrix(graph.source['adjacency_matrix']))
-    print("Eulerian Cycle:", graph.fleury())
-    graph.draw_graph()
+    print("Eulerian Cycle:", graph.fleury('D'))
+    print([graph.fleury(item) for item in graph.nodes])
+    # graph.draw_graph()
