@@ -59,4 +59,4 @@ def match(s, p):
             yield i-lenPattern
             i += 1
 
-print(list(match('ibababacsbadcba', 'aba')))
+print(list(match('ibababacsbadcba', 'ba')))

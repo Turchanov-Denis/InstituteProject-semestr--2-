@@ -91,8 +91,8 @@ class Graph:
 
 
 if __name__ == "__main__":
-    g = Graph.from_json("adjacency_matrix.json")
-    # g.draw_graph()
+    g = Graph.from_json("adjacency_matrix[test1].json")
+    g.draw_graph()
     print("\nBFS from vertex 0:", g.bfs_shortest_distances(0))
     print("\nBFS components:", g.bfs_components(), "amount: ",len(g.bfs_components()) )
     

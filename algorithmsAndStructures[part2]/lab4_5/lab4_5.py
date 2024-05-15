@@ -45,7 +45,6 @@ class Graph:
         return components
 
     def dfs_componentsS(self, start_vertex, verticesS, transposed_graph):
-        print(verticesS)
         visited = [False] * len(verticesS)
         components = []
         for vertex in verticesS:
@@ -120,8 +119,8 @@ class Graph:
 
 if __name__ == "__main__":
     g4 = Graph.from_json("adjacency_matrix[test1].json")
-    g5 = Graph.from_json("adjacency_matrix[test2].json")
-    # g5.draw_graph()
+    # g5 = Graph.from_json("adjacency_matrix[test2].json")
+    g4.draw_graph()
     # print("\nDFS components:", g4.dfs_components(0))
     # print("\nDFS components:", g5.draw_graph())
-    print("\nDFS5:", g5.kosaraju())
+    print("\nDFS5:", g4.kosaraju())

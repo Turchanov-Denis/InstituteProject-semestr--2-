@@ -79,4 +79,4 @@ if __name__ == "__main__":
           np.matrix(graph.source['adjacency_matrix']))
     print("Eulerian Cycle:", graph.fleury('D'))
     print([graph.fleury(item) for item in graph.nodes])
-    # graph.draw_graph()
+    graph.draw_graph()

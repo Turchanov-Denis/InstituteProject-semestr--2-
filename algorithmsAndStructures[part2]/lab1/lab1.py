@@ -25,8 +25,8 @@ def jarvismarch(A):
     return H
 
 
-points = [(0, 3), (2, 2), (1, 1), (2, 1), (3, 0), (0, 0), (3, 3)]
+if __name__ == "__main__":
+    points = [(0, 3), (2, 2), (1, 1), (2, 1), (3, 0), (0, 0), (3, 3)]
 
-for i in jarvismarch(points):
-    print(points[i])
-    
+    for i in jarvismarch(points):
+        print(points[i])

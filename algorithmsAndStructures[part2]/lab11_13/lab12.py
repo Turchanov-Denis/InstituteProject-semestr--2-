@@ -25,6 +25,6 @@ def prefix(s):
     return v
 
 
-pattern = "abc"
+pattern = "a"
 text = "ababcababcabc"
 print(kmp(pattern, text))
