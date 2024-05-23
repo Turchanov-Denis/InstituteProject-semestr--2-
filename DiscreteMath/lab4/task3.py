@@ -1,75 +1,48 @@
-import math
+import statistics
+def initialize_dictionary():
+    # Инициализация словаря с односимвольными строками
+    dictionary = {chr(i): i for i in range(256)}
+    return dictionary, 256
 
-
-def lzw_encode(text):
-    dictionary_size = 256
-    dictionary = {chr(i): i for i in range(dictionary_size)}
-    encoded_text = []
-    current_sequence = ""
-
-    for char in text:
-        new_sequence = current_sequence + char
-        if new_sequence in dictionary:
-            current_sequence = new_sequence
+def lzw_compress(input_string):
+    dictionary, dict_size = initialize_dictionary()
+    current_string = ""
+    compressed_data = []
+    
+    for symbol in input_string:
+        string_plus_symbol = current_string + symbol
+        if string_plus_symbol in dictionary:
+            current_string = string_plus_symbol
         else:
-            encoded_text.append(dictionary[current_sequence])
-            dictionary[new_sequence] = dictionary_size
-            dictionary_size += 1
-            current_sequence = char
+            compressed_data.append(dictionary[current_string])
+            dictionary[string_plus_symbol] = dict_size
+            dict_size += 1
+            current_string = symbol
+    
+    if current_string:
+        compressed_data.append(dictionary[current_string])
+    
+    return compressed_data
 
-    if current_sequence:
-        encoded_text.append(dictionary[current_sequence])
+def calculate_encoded_bits(compressed_data):
+    print(compressed_data)
+    max_code = max(compressed_data)
+    bits_per_code = max_code.bit_length()
+    total_bits = len(compressed_data) * bits_per_code 
+    return total_bits
 
-    return encoded_text, dictionary
+def main():
+    # Чтение содержимого файла text.txt
+    with open('text.txt', 'r') as file:
+        input_string = file.read()
+    
+    # Сжатие данных с использованием LZW
+    compressed_data = lzw_compress(input_string)
+    
+    # Вычисление количества закодированных бит
+    total_bits = calculate_encoded_bits(compressed_data)
+    
+    print(f'Количество закодированных бит: {total_bits}')
 
-
-def lzw_decode(encoded_text, dictionary):
-    decoded_text = ""
-    dictionary_size = 256
-    inverse_dictionary = {v: k for k, v in dictionary.items()}
-    current_sequence = chr(encoded_text.pop(0))
-    decoded_text += current_sequence
-
-    for code in encoded_text:
-        if code in inverse_dictionary:
-            entry = inverse_dictionary[code]
-        elif code == dictionary_size:
-            entry = current_sequence + current_sequence[0]
-        else:
-            raise ValueError("Bad compressed code")
-
-        decoded_text += entry
-        dictionary[current_sequence + entry[0]] = dictionary_size
-        dictionary_size += 1
-        current_sequence = entry
-
-    return decoded_text
-
-
-# Считываем текст из файла
-filename = 'text.txt'
-with open(filename, 'r', encoding='utf-8') as file:
-    text = file.read()
-
-# Кодируем текст с помощью LZW
-encoded_text, dictionary = lzw_encode(text)
-
-# Декодируем закодированный текст
-decoded_text = lzw_decode(encoded_text, dictionary)
-
-# Выводим закодированный текст и сравниваем с оригиналом
-print("Закодированный текст LZW:")
-print(encoded_text)
-print("\nДекодированный текст LZW:")
-print(decoded_text)
-
-# Сравниваем длины закодированного текста и оригинала
-print("\nДлина исходного текста:", len(text))
-print("Длина закодированного текста:", len(encoded_text))
-# Определяем размер словаря
-dictionary_size = len(set(encoded_text))
-
-# Вычисляем количество бит
-bit_count = len(encoded_text) * math.log2(dictionary_size)
-
-print("Количество бит для закодированного текста:", bit_count)
+if __name__ == "__main__":
+    main()

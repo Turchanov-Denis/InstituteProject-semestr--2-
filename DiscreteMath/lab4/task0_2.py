@@ -1,35 +1,13 @@
 from collections import Counter
 import heapq
-from collections import defaultdict, Counter
 import math
 
 def count_character_frequency(filename):
     with open(filename, 'r', encoding='utf-8') as file:
-        text = file.read().lower().replace(" ",'')
+        text = file.read().lower().replace(" ", '')
         character_frequency = Counter(text)
         pair_frequency = Counter(zip(text, text[1:]))  # Считаем частоту пар букв
         return character_frequency, pair_frequency
-
-filename = 'text.txt'
-character_frequency, pair_frequency = count_character_frequency(filename)
-
-print("Частота каждого символа в тексте:")
-for char, freq in character_frequency.items():
-    print(f"Символ '{char}': {freq}")
-
-print("\nЧастота пар букв в тексте:")
-for pair, freq in pair_frequency.items():
-    print(f"Пара '{pair}': {freq}")
-
-class Node:
-    def __init__(self, value, freq):
-        self.value = value
-        self.freq = freq
-        self.left = None
-        self.right = None
-
-    def __lt__(self, other):
-        return self.freq < other.freq
 
 def build_huffman_tree(frequencies):
     heap = [Node(char, freq) for char, freq in frequencies.items()]
@@ -77,20 +55,50 @@ def shannon_entropy(frequencies, total_symbols):
         entropy -= probability * (probability and math.log2(probability))
     return entropy
 
+def encode_huffman_tree(root):
+    if root is None:
+        return ""
+
+    if root.value is not None:
+        return "1" + bin(ord(root.value))[2:].zfill(8)  # 1 + 8-bit ASCII код символа
+
+    return "0" + encode_huffman_tree(root.left) + encode_huffman_tree(root.right)
+
+class Node:
+    def __init__(self, value, freq):
+        self.value = value
+        self.freq = freq
+        self.left = None
+        self.right = None
+
+    def __lt__(self, other):
+        return self.freq < other.freq
+
+filename = 'text.txt'
+character_frequency, pair_frequency = count_character_frequency(filename)
+
+print("Частота каждого символа в тексте:")
+for char, freq in character_frequency.items():
+    print(f"Символ '{char}': {freq}")
+
+print("\nЧастота пар букв в тексте:")
+for pair, freq in pair_frequency.items():
+    print(f"Пара '{pair}': {freq}")
+
 filename = 'text.txt'
 with open(filename, 'r', encoding='utf-8') as file:
-    text = file.read().lower().replace(" ",'')
+    text = file.read().lower().replace(" ", '')
     character_frequency = Counter(text)
 
 huffman_tree = build_huffman_tree(character_frequency)
 huffman_codes = build_huffman_codes(huffman_tree)
 encoded_text = huffman_encode(text, huffman_codes)
 
-# Выводим закодированный текст
-print("Закодированный текст Хаффмана:")
+# Вывод закодированного текста Хаффмана
+print("\nЗакодированный текст Хаффмана:")
 print(encoded_text)
 
-# Выводим коды Хаффмана для каждого символа
+# Вывод кодов Хаффмана для каждого символа
 print("\nКоды Хаффмана для каждого символа:")
 for char, code in sorted(huffman_codes.items()):
     print(f"Символ '{char}': {code}")
@@ -108,3 +116,9 @@ shannon_information = shannon_entropy(character_frequency, total_symbols) * tota
 print("\nКоличество бит для равномерных кодов (5-ти битовые):", uniform_code_length)
 print("Количество бит для кодов Хаффмана:", huffman_code_length)
 print("Количество информации по формуле Шеннона:", shannon_information)
+
+# Закодированное дерево Хаффмана
+encoded_tree = encode_huffman_tree(huffman_tree)
+print("\nЗакодированное дерево Хаффмана:")
+print(encoded_tree)
+print("Длина закодированного дерева Хаффмана в битах:", len(encoded_tree))
