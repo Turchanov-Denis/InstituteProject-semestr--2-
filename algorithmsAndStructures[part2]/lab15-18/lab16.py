@@ -12,8 +12,8 @@ def knapsack(weights, values, capacity):
 
     return dp[n][capacity]
 
-# Пример использования
+
 weights = [2, 3, 4, 5]
 values = [3, 4, 5, 6]
 capacity = 5
-print(knapsack(weights, values, capacity))  # Вывод: 7
+print(knapsack(weights, values, capacity)) 
