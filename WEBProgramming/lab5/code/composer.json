@@ -1,0 +1,19 @@
+{
+    "name": "rafu/market",
+    "description": "lab4",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Rafu\\Market\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Turchanov-Denis",
+            "email": "96124363+Turchanov-Denis@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "google/apiclient": "2.16"
+    }
+}
